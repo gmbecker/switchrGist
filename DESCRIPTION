@@ -1,0 +1,13 @@
+Package: switchrGist
+Type: Package
+Title: Publish package manifests to gists
+Version: 0.0.1
+Date: 2014-11-21
+Author: Gabriel Becker [aut, cre]
+Maintainer: Gabriel Becker <becker.gabriel@gene.com>
+Description: This package provides a simple plugin to the switchr
+	     framework which allows users to publish package and
+	     session manifests as gists
+Depends: switchr
+Imports: github, RJSONIO
+License: Artistic 2.0
