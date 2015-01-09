@@ -1,21 +1,32 @@
-##' @import github
-##' @importFrom RJSONIO toJSON
-##' publishManifest
+
+
+##' 
 ##'
 ##' publish a manifest to Github in the form of a gist
 ##'
 ##' @param man The manifest to be published
+##' @param desc description to apply to the Gist
 ##' @param ctx the github context to be used. By defualt this will open a Web
 ##' browser and ask you to authorize switchr to modify your gists.
 ##' @param ... unused.
 ##' @return the url to access the raw 
 ##' @export
-publishManifest = function(man, desc,
+##' @import github
+##' @importFrom RJSONIO toJSON
+setMethod("publishManifest", c(manifest = "PkgManifest",
+                               dest = "GistDest"),
+          function(manifest, dest, desc, ctx, ...) {
+              .publishManifest(man = manifest,
+                               desc = desc,
+                               ctx = ctx)
+          })
+
+.publishManifest = function(man, desc,
     ctx,
     ...) {
     if(missing(ctx))
         ctx = interactive.login(.client_id(), .client_secret(), scopes = "gist")
-    fil = saveManifest(man, tempfile(pattern = "manifest"))
+    fil = publishManifest(man, tempfile(pattern = "manifest"))
     txt = paste(readLines(fil), collapse = "\n")
     payload = list(description=desc,
         public = TRUE,
