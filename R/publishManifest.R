@@ -1,3 +1,5 @@
+##' @import httpuv
+##' @import gistr
 
 
 ##' 
@@ -11,34 +13,30 @@
 ##' @param ... unused.
 ##' @return the url to access the raw 
 ##' @export
-##' @import github
 ##' @importFrom RJSONIO toJSON
 setMethod("publishManifest", c(manifest = "PkgManifest",
                                dest = "GistDest"),
-          function(manifest, dest, desc, ctx, ...) {
-              .publishManifest(man = manifest,
-                               desc = desc,
-                               ctx = ctx)
+          function(manifest, dest, desc, ...) {
+              .publishManifest2(man = manifest,
+                               desc = desc)
           })
 
-.publishManifest = function(man, desc,
-    ctx,
-    ...) {
-    if(missing(ctx))
-        ctx = interactive.login(.client_id(), .client_secret(), scopes = "gist")
-    fil = publishManifest(man, tempfile(pattern = "manifest"))
-    txt = paste(readLines(fil), collapse = "\n")
-    payload = list(description=desc,
-        public = TRUE,
-        files = list("manifest.rman" = list(
-                         content = txt)))
-    json = toJSON(payload)
-    res = create.gist(json, ctx)
-    if(!res$ok)
-        stop("failed to create gist")
-    ##    res$content$files$manifest.rman$raw_url
-    res$content$html_url
+setMethod("publishManifest", c(manifest = "SessionManifest",
+                               dest = "GistDest"),
+          function(manifest, dest, desc, ...) {
+              .publishManifest2(man = manifest,
+                               desc = desc)
+          })
+
+.publishManifest2 = function(man, desc = "An R package manifest", ...) {
+    fil = tempfile(pattern = "manifest.rman")
+    fil = publishManifest(man, fil)
+    gist_create(files = fil, description = desc)
 }
+
+    
+
+
 
 
 ##XXX todo: make these more secure
