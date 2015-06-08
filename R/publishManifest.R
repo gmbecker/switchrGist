@@ -1,13 +1,15 @@
 ##' @import httpuv
 ##' @import gistr
 ##' @import switchr
+##' @import methods
 NULL
 
 ##' publishManifest
 ##'
 ##' publish a manifest to Github in the form of a gist
 ##'
-##' @param man The manifest to be published
+##' @param manifest The manifest to be published
+##' @param dest a GistDest object
 ##' @param desc description to apply to the Gist
 ##' @param fname The name of the file to create within the gist.
 ##' @param ... unused
@@ -15,6 +17,9 @@ NULL
 ##' @docType methods
 ##' @aliases publishManifest,PkgManifest,GistDest
 ##' @export
+##' @examples
+##' man = libManifest()
+##'\dontrun{gisturl = publishManifest(man, Gist())}
 ##' @rdname publishManifest
 ##' @importFrom RJSONIO toJSON
 setMethod("publishManifest", c(manifest = "PkgManifest",

@@ -15,18 +15,24 @@
   desc = "An R seeding manifest", fname = "manifest.rman", ...)
 }
 \arguments{
+\item{manifest}{The manifest to be published}
+
+\item{dest}{a GistDest object}
+
 \item{desc}{description to apply to the Gist}
 
 \item{fname}{The name of the file to create within the gist.}
 
 \item{...}{unused}
-
-\item{man}{The manifest to be published}
 }
 \value{
 the url to access the raw file within the gist.
 }
 \description{
 publish a manifest to Github in the form of a gist
+}
+\examples{
+man = libManifest()
+\dontrun{gisturl = publishManifest(man, Gist())}
 }
 
