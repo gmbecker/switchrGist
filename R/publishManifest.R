@@ -1,52 +1,48 @@
 ##' @import httpuv
 ##' @import gistr
+##' @import switchr
+NULL
 
-
-##' 
+##' publishManifest
 ##'
 ##' publish a manifest to Github in the form of a gist
 ##'
 ##' @param man The manifest to be published
 ##' @param desc description to apply to the Gist
-##' @param ctx the github context to be used. By defualt this will open a Web
-##' browser and ask you to authorize switchr to modify your gists.
-##' @param ... unused.
-##' @return the url to access the raw 
+##' @param fname The name of the file to create within the gist.
+##' @param ... unused
+##' @return the url to access the raw file within the gist.
+##' @docType methods
+##' @aliases publishManifest,PkgManifest,GistDest
 ##' @export
+##' @rdname publishManifest
 ##' @importFrom RJSONIO toJSON
 setMethod("publishManifest", c(manifest = "PkgManifest",
                                dest = "GistDest"),
-          function(manifest, dest, desc, ...) {
+          function(manifest, dest, desc = "An R package manifest", fname = "manifest.rman",...) {
               .publishManifest2(man = manifest,
                                desc = desc)
           })
+##' @export
+##' @rdname publishManifest
+##' @aliases publishManifest,SessionManifest,GistDest
 
 setMethod("publishManifest", c(manifest = "SessionManifest",
                                dest = "GistDest"),
-          function(manifest, dest, desc, ...) {
+          function(manifest, dest, desc="An R seeding manifest", fname = "manifest.rman", ...) {
               .publishManifest2(man = manifest,
                                desc = desc)
           })
 
-.publishManifest2 = function(man, desc = "An R package manifest", ...) {
-    fil = tempfile(pattern = "manifest.rman")
+.publishManifest2 = function(man, desc = "An R package manifest", fname = "manifest.rman", ...) {
+    fil = tempfile(pattern = fname)
     fil = publishManifest(man, fil)
-    gist_create(files = fil, description = desc)
+    g = gist_create(files = fil, description = desc)
+    fname = names(g$files)
+    g$files[[fname]]$raw_url
 }
 
     
 
 
 
-
-##XXX todo: make these more secure
-
-.client_id = function() {
-    load(system.file("data/sysdata.rda", package = "switchrGist"))
-    id
-}
-
-.client_secret = function() {
-    load(system.file("data/sysdata.rda", package = "switchrGist"))
-    sec
-}
