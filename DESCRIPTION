@@ -1,8 +1,8 @@
 Package: switchrGist
 Type: Package
 Title: Publish Package Manifests to GitHub Gists
-Version: 0.2.3
-Date: 2017-10-6
+Version: 0.2.4
+Date: 2018-11-05
 Author: Gabriel Becker [aut, cre]
 Copyright: Genentech Inc.
 Maintainer: Gabriel Becker <gabembecker@gmail.com>
